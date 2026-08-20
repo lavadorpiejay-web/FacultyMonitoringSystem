@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="FacultyMonitoringSystem.Pages.AttendancePage"
+    Title="Attendance">
+
+    <Grid
+        Padding="20"
+        RowDefinitions="Auto,*"
+        RowSpacing="15">
+
+        <SearchBar
+            Grid.Row="0"
+            x:Name="SearchBar"
+            Placeholder="Search faculty..."
+            TextChanged="SearchBar_TextChanged" />
+
+        <CollectionView
+            Grid.Row="1"
+            x:Name="AttendanceCollection">
+
+            <CollectionView.EmptyView>
+
+                <Label
+                    Text="No attendance records."
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate>
+
+                    <Border
+                        Margin="0,5"
+                        Padding="15">
+
+                        <VerticalStackLayout
+                            Spacing="8">
+
+                            <Label
+                                Text="{Binding FacultyName}"
+                                FontSize="19"
+                                FontAttributes="Bold" />
+
+                            <Label
+                                Text="{Binding EmployeeId}" />
+
+                            <Label
+                                Text="{Binding Department}" />
+
+                            <Label
+                                Text="{Binding Status}"
+                                FontAttributes="Bold" />
+
+                            <HorizontalStackLayout
+                                Spacing="10">
+
+                                <Button
+                                    Text="TIME IN"
+                                    CommandParameter="{Binding FacultyId}"
+                                    Clicked="TimeIn_Clicked" />
+
+                                <Button
+                                    Text="TIME OUT"
+                                    CommandParameter="{Binding FacultyId}"
+                                    Clicked="TimeOut_Clicked" />
+
+                            </HorizontalStackLayout>
+
+                            <Label
+                                Text="{Binding TimeIn, StringFormat='Time In: {0:hh\\:mm tt}'}" />
+
+                            <Label
+                                Text="{Binding TimeOut, StringFormat='Time Out: {0:hh\\:mm tt}'}" />
+
+                            <Label
+                                Text="{Binding TotalHours, StringFormat='Total Hours: {0:F2}'}" />
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

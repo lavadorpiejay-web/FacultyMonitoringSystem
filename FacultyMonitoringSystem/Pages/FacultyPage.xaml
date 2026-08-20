@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="FacultyMonitoringSystem.Pages.FacultyPage"
+    Title="Faculty Management">
+
+    <Grid
+        Padding="20"
+        RowDefinitions="Auto,Auto,*"
+        RowSpacing="15">
+
+        <VerticalStackLayout
+            Grid.Row="0"
+            Spacing="10">
+
+            <Entry
+                x:Name="EmployeeIdEntry"
+                Placeholder="Employee ID" />
+
+            <Entry
+                x:Name="NameEntry"
+                Placeholder="Full Name" />
+
+            <Entry
+                x:Name="DepartmentEntry"
+                Placeholder="Department" />
+
+            <Entry
+                x:Name="PositionEntry"
+                Placeholder="Position" />
+
+            <Button
+                Text="ADD FACULTY"
+                Clicked="AddFaculty_Clicked" />
+
+        </VerticalStackLayout>
+
+        <SearchBar
+            Grid.Row="1"
+            x:Name="SearchBar"
+            Placeholder="Search faculty..."
+            TextChanged="SearchBar_TextChanged" />
+
+        <CollectionView
+            Grid.Row="2"
+            x:Name="FacultyCollection">
+
+            <CollectionView.EmptyView>
+
+                <Label
+                    Text="No faculty members found."
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center" />
+
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate>
+
+                    <Border
+                        Margin="0,5"
+                        Padding="15">
+
+                        <Grid
+                            ColumnDefinitions="*,Auto"
+                            RowDefinitions="Auto,Auto,Auto">
+
+                            <Label
+                                Grid.Row="0"
+                                Text="{Binding FullName}"
+                                FontSize="18"
+                                FontAttributes="Bold" />
+
+                            <Label
+                                Grid.Row="1"
+                                Text="{Binding EmployeeId}" />
+
+                            <Label
+                                Grid.Row="2"
+                                Text="{Binding Department}" />
+
+                            <Button
+                                Grid.Column="1"
+                                Grid.RowSpan="3"
+                                Text="DELETE"
+                                CommandParameter="{Binding Id}"
+                                Clicked="Delete_Clicked" />
+
+                        </Grid>
+
+                    </Border>
+
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

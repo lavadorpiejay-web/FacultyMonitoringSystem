@@ -1,24 +1,72 @@
-﻿namespace FacultyMonitoringSystem
+﻿using FacultyMonitoringSystem.Services;
+
+namespace FacultyMonitoringSystem;
+
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    private readonly JsonDataService _dataService;
+
+    public MainPage(
+        JsonDataService dataService)
     {
-        int count = 0;
+        InitializeComponent();
 
-        public MainPage()
-        {
-            InitializeComponent();
-        }
+        _dataService = dataService;
+    }
 
-        private void OnCounterClicked(object? sender, EventArgs e)
-        {
-            count++;
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
+        await LoadDashboardAsync();
+    }
 
-            SemanticScreenReader.Announce(CounterBtn.Text);
-        }
+    private async Task LoadDashboardAsync()
+    {
+        var faculties =
+            await _dataService.GetFacultiesAsync();
+
+        var attendance =
+            await _dataService.GetAttendanceAsync();
+
+        FacultyCountLabel.Text =
+            faculties.Count(x => x.IsActive)
+            .ToString();
+
+        PresentCountLabel.Text =
+            attendance.Count(x =>
+                x.Date.Date == DateTime.Today &&
+                x.TimeIn != null)
+            .ToString();
+
+        DateLabel.Text =
+            DateTime.Now.ToString(
+                "dddd, MMMM dd, yyyy");
+    }
+
+    private async void FacultyManagement_Clicked(
+        object sender,
+        EventArgs e)
+    {
+        await Navigation.PushAsync(
+            new Pages.FacultyPage(_dataService));
+    }
+
+    private async void Attendance_Clicked(
+        object sender,
+        EventArgs e)
+    {
+        await Navigation.PushAsync(
+            new Pages.AttendancePage(_dataService));
+    }
+
+    private async void History_Clicked(
+        object sender,
+        EventArgs e)
+    {
+        await Navigation.PushAsync(
+            new Pages.AttendancePage(
+                _dataService,
+                true));
     }
 }

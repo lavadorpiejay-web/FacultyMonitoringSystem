@@ -1,17 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿namespace FacultyMonitoringSystem;
 
-namespace FacultyMonitoringSystem
+public partial class App : Application
 {
-    public partial class App : Application
+    public App(IServiceProvider serviceProvider)
     {
-        public App()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
 
-        protected override Window CreateWindow(IActivationState? activationState)
-        {
-            return new Window(new AppShell());
-        }
+        var dataService =
+            serviceProvider.GetRequiredService<
+                Services.JsonDataService>();
+
+        MainPage =
+            new NavigationPage(
+                new MainPage(dataService));
     }
 }
